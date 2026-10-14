@@ -1,0 +1,103 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-\\.:]+$');
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == 'nkishoork@gmail.com' ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    function isSelf(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Admins index collection
+    match /admins/{userId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin() || (isSignedIn() && request.auth.token.email == 'nkishoork@gmail.com');
+    }
+
+    // User profiles
+    match /users/{userId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && (
+        isSelf(userId) || isAdmin()
+      );
+      allow update: if isSignedIn() && (
+        isSelf(userId) || isAdmin()
+      );
+      allow delete: if isAdmin();
+    }
+
+    // Customers collection
+    match /customers/{customerId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(customerId);
+      allow update: if isSignedIn() && isValidId(customerId);
+      allow delete: if isSignedIn();
+    }
+
+    // Leads collection
+    match /leads/{leadId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(leadId);
+      allow update: if isSignedIn() && isValidId(leadId);
+      allow delete: if isSignedIn();
+    }
+
+    // Deals collection
+    match /deals/{dealId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(dealId);
+      allow update: if isSignedIn() && isValidId(dealId);
+      allow delete: if isSignedIn();
+    }
+
+    // Tasks collection
+    match /tasks/{taskId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(taskId);
+      allow update: if isSignedIn() && isValidId(taskId);
+      allow delete: if isSignedIn();
+    }
+
+    // Customer interactions timeline
+    match /interactions/{interactionId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(interactionId);
+      allow update: if isSignedIn() && isValidId(interactionId);
+      allow delete: if isSignedIn();
+    }
+
+    // In-app notifications
+    match /notifications/{notificationId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn();
+      allow update: if isSignedIn();
+      allow delete: if isSignedIn();
+    }
+
+    // Employees collection
+    match /employees/{employeeId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(employeeId);
+      allow update: if isSignedIn() && isValidId(employeeId);
+      allow delete: if isSignedIn();
+    }
+  }
+}

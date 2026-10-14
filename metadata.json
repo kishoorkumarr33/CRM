@@ -1,0 +1,7 @@
+{
+  "name": "ApexCRM - Customer & Sales Management System",
+  "description": "Comprehensive Customer Relationship Management (CRM) System with pipeline tracking, customer 360 view, sales analytics, employee collaboration, and follow-ups.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

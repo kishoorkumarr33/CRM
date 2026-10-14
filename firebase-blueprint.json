@@ -1,0 +1,192 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User account profile and role details",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "maxLength": 255 },
+        "displayName": { "type": "string", "maxLength": 100 },
+        "photoURL": { "type": "string", "maxLength": 1024 },
+        "role": { "type": "string", "enum": ["admin", "manager", "employee"] },
+        "department": { "type": "string", "maxLength": 100 },
+        "jobTitle": { "type": "string", "maxLength": 100 },
+        "phone": { "type": "string", "maxLength": 30 },
+        "status": { "type": "string", "enum": ["active", "inactive"] },
+        "createdAt": { "type": "string", "maxLength": 50 },
+        "updatedAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["uid", "email", "role", "displayName"]
+    },
+    "Customer": {
+      "title": "Customer",
+      "description": "Customer record with company and contact information",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 150 },
+        "company": { "type": "string", "maxLength": 150 },
+        "email": { "type": "string", "maxLength": 255 },
+        "phone": { "type": "string", "maxLength": 50 },
+        "address": { "type": "string", "maxLength": 255 },
+        "city": { "type": "string", "maxLength": 100 },
+        "state": { "type": "string", "maxLength": 100 },
+        "country": { "type": "string", "maxLength": 100 },
+        "industry": { "type": "string", "maxLength": 100 },
+        "customerType": { "type": "string", "enum": ["Enterprise", "Mid-Market", "SMB", "Individual", "B2B", "B2C"] },
+        "source": { "type": "string", "maxLength": 100 },
+        "assignedEmployeeId": { "type": "string", "maxLength": 128 },
+        "assignedEmployeeName": { "type": "string", "maxLength": 150 },
+        "status": { "type": "string", "enum": ["Active", "Inactive", "Lead", "Churned"] },
+        "notes": { "type": "string", "maxLength": 5000 },
+        "createdDate": { "type": "string", "maxLength": 50 },
+        "lastContactDate": { "type": "string", "maxLength": 50 },
+        "createdAt": { "type": "string", "maxLength": 50 },
+        "updatedAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["id", "name", "email", "status"]
+    },
+    "Lead": {
+      "title": "Lead",
+      "description": "Prospective sales lead undergoing qualification pipeline",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "leadName": { "type": "string", "maxLength": 150 },
+        "company": { "type": "string", "maxLength": 150 },
+        "email": { "type": "string", "maxLength": 255 },
+        "phone": { "type": "string", "maxLength": 50 },
+        "source": { "type": "string", "maxLength": 100 },
+        "interest": { "type": "string", "maxLength": 255 },
+        "estimatedValue": { "type": "number" },
+        "priority": { "type": "string", "enum": ["Low", "Medium", "High", "Urgent"] },
+        "status": { "type": "string", "enum": ["New", "Contacted", "Qualified", "Proposal", "Converted", "Lost"] },
+        "assignedEmployeeId": { "type": "string", "maxLength": 128 },
+        "assignedEmployeeName": { "type": "string", "maxLength": 150 },
+        "followUpDate": { "type": "string", "maxLength": 50 },
+        "notes": { "type": "string", "maxLength": 5000 },
+        "convertedCustomerId": { "type": "string", "maxLength": 128 },
+        "createdDate": { "type": "string", "maxLength": 50 },
+        "createdAt": { "type": "string", "maxLength": 50 },
+        "updatedAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["id", "leadName", "status"]
+    },
+    "Deal": {
+      "title": "Deal",
+      "description": "Sales opportunity associated with customer and pipeline stage",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "dealName": { "type": "string", "maxLength": 200 },
+        "customerId": { "type": "string", "maxLength": 128 },
+        "customerName": { "type": "string", "maxLength": 150 },
+        "value": { "type": "number" },
+        "stage": { "type": "string", "enum": ["Discovery", "Qualification", "Proposal", "Negotiation", "Won", "Lost"] },
+        "probability": { "type": "number" },
+        "expectedClosingDate": { "type": "string", "maxLength": 50 },
+        "actualClosingDate": { "type": "string", "maxLength": 50 },
+        "assignedEmployeeId": { "type": "string", "maxLength": 128 },
+        "assignedEmployeeName": { "type": "string", "maxLength": 150 },
+        "dealType": { "type": "string", "maxLength": 100 },
+        "notes": { "type": "string", "maxLength": 5000 },
+        "createdDate": { "type": "string", "maxLength": 50 },
+        "createdAt": { "type": "string", "maxLength": 50 },
+        "updatedAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["id", "dealName", "value", "stage", "customerId"]
+    },
+    "Task": {
+      "title": "Task",
+      "description": "Action item or follow-up task related to customer, lead or deal",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 200 },
+        "description": { "type": "string", "maxLength": 2000 },
+        "relatedType": { "type": "string", "enum": ["customer", "lead", "deal", "general"] },
+        "relatedId": { "type": "string", "maxLength": 128 },
+        "relatedName": { "type": "string", "maxLength": 150 },
+        "assignedEmployeeId": { "type": "string", "maxLength": 128 },
+        "assignedEmployeeName": { "type": "string", "maxLength": 150 },
+        "dueDate": { "type": "string", "maxLength": 50 },
+        "priority": { "type": "string", "enum": ["Low", "Medium", "High", "Urgent"] },
+        "status": { "type": "string", "enum": ["Pending", "In Progress", "Completed", "Cancelled"] },
+        "completionDate": { "type": "string", "maxLength": 50 },
+        "createdAt": { "type": "string", "maxLength": 50 },
+        "updatedAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["id", "title", "dueDate", "status"]
+    },
+    "Interaction": {
+      "title": "Interaction",
+      "description": "Log of communication including call, meeting, email or note",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "customerId": { "type": "string", "maxLength": 128 },
+        "customerName": { "type": "string", "maxLength": 150 },
+        "type": { "type": "string", "enum": ["Call", "Meeting", "Email", "Note"] },
+        "summary": { "type": "string", "maxLength": 200 },
+        "details": { "type": "string", "maxLength": 5000 },
+        "date": { "type": "string", "maxLength": 50 },
+        "employeeId": { "type": "string", "maxLength": 128 },
+        "employeeName": { "type": "string", "maxLength": 150 },
+        "outcome": { "type": "string", "maxLength": 200 },
+        "createdAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["id", "customerId", "type", "summary", "date"]
+    },
+    "CRMNotification": {
+      "title": "CRMNotification",
+      "description": "System or user task notification",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 200 },
+        "message": { "type": "string", "maxLength": 1000 },
+        "type": { "type": "string", "enum": ["task_due", "task_overdue", "lead_assigned", "deal_won", "system"] },
+        "read": { "type": "boolean" },
+        "link": { "type": "string", "maxLength": 255 },
+        "createdAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["id", "title", "message", "type"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profiles and RBAC role assignments"
+    },
+    "/admins/{userId}": {
+      "schema": "UserProfile",
+      "description": "Admin designation collection for zero-trust security checks"
+    },
+    "/customers/{customerId}": {
+      "schema": "Customer",
+      "description": "CRM customer accounts and contact information"
+    },
+    "/leads/{leadId}": {
+      "schema": "Lead",
+      "description": "Sales lead records and pipeline stages"
+    },
+    "/deals/{dealId}": {
+      "schema": "Deal",
+      "description": "Sales opportunities and deal values"
+    },
+    "/tasks/{taskId}": {
+      "schema": "Task",
+      "description": "Follow-up tasks, assignments, and due dates"
+    },
+    "/interactions/{interactionId}": {
+      "schema": "Interaction",
+      "description": "Customer activity timeline events and logs"
+    },
+    "/notifications/{notificationId}": {
+      "schema": "CRMNotification",
+      "description": "User notifications for tasks and assignments"
+    }
+  }
+}
